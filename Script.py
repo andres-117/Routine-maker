@@ -10,10 +10,19 @@ import random as random
 
 excel = pd.read_excel("Ejercicios.xlsx")
 
-dificultad = 10
-
 def creador_rutina(original_db):
-    dificultad = 10
+   
+    print("Dificultades disponibles: \n.-Facil = 6\n.-Normal = 10\n.-Fuerte = 20")
+    dif_range = ["6","10","20"]
+    dificultad = input("Indica la dificultad: ")
+    
+    while dificultad not in dif_range: #para asegurar que indican un valor valido
+        print("Selecciona una dificultad disponible: ")
+        print("Dificultades disponibles: \n.-Facil = 6\n.-Normal = 10\n.-Fuerte = 20")
+        dificultad = input("Indica la dificultad: ")
+   
+    dificultad = int(dificultad) #los input entran como str siempre
+    
     ejercicios = original_db
     global rutina
     rutina = pd.DataFrame()
@@ -21,7 +30,7 @@ def creador_rutina(original_db):
     
     ejercicios["Total"] = ejercicios.sum(axis=1) #agrega columna de total
       
-    while valor_rutina < dificultad:
+    while valor_rutina <= dificultad:
         
         comp = dificultad - valor_rutina
         ejercicios = ejercicios[ejercicios.Total <= comp]
@@ -29,7 +38,7 @@ def creador_rutina(original_db):
         
         if ejercicios.empty == True:
             
-            rutina = rutina[excel.columns]
+            rutina = rutina[original_db.columns]
             print(rutina)
             
             break
@@ -40,4 +49,7 @@ def creador_rutina(original_db):
         valor_rutina = rutina["Total"].sum()
         
        
+
+
+
 creador_rutina(excel)
